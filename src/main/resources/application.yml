@@ -1,0 +1,8 @@
+server:
+  port: 9091
+  session:
+    timeout: 900
+  context-path: /api
+spring:
+  application.name: cosean-trajectory
+

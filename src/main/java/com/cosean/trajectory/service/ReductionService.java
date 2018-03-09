@@ -1,8 +1,6 @@
 package com.cosean.trajectory.service;
 
-import com.cosean.trajectory.model.KdTree;
 import com.cosean.trajectory.model.Point;
-import com.cosean.trajectory.model.QueryField;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,10 +13,7 @@ public class ReductionService {
 
     public ResponseEntity simplify(List<Point> coordList) {
         List<Point> pointListOut = new ArrayList<>();
-        KdTree kdTree =new KdTree();
-        coordList.forEach(kdTree::insert);
-        kdTree.range(new QueryField(40,27,45,29.922));
-        //ramerDouglasPeucker(coordList,0.001,pointListOut);
+        ramerDouglasPeucker(coordList,0.001,pointListOut);
         return new ResponseEntity<>(pointListOut,HttpStatus.OK);
     }
 

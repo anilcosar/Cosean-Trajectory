@@ -23,7 +23,7 @@ public class ReductionController {
     }
 
     @PostMapping("/reduction")
-    public ResponseEntity save(@RequestBody List<Point> coordinates ) {
+    public ResponseEntity reduction(@RequestBody List<Point> coordinates ) {
         return reductionService.simplify(coordinates);
     }
 }

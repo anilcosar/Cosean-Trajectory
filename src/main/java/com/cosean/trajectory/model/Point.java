@@ -4,31 +4,31 @@ import java.util.Objects;
 
 public class Point {
 
-    private double lat;
-    private double lng;
+    private double latitude;
+    private double longitude;
 
-    public Point(double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
+    public Point(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Point() {
     }
 
-    public double getLat() {
-        return lat;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public double getLng() {
-        return lng;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLng(double lng) {
-        this.lng = lng;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override
@@ -36,20 +36,20 @@ public class Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return Double.compare(point.lat, lat) == 0 &&
-                Double.compare(point.lng, lng) == 0;
+        return Double.compare(point.latitude, latitude) == 0 &&
+                Double.compare(point.longitude, longitude) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lat, lng);
+        return Objects.hash(latitude, longitude);
     }
 
     @Override
     public String toString() {
         return "{" +
-                "lat=" + lat +
-                ", lng=" + lng +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }

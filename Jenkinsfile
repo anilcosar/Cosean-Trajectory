@@ -11,6 +11,6 @@ node {
     }
 
     stage('Run'){
-            sh "mvn spring-boot:run"
+            sh "mvn spring-boot:run &"
     }
 }

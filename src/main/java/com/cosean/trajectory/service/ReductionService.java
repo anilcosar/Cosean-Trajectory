@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReductionService {
@@ -14,7 +16,10 @@ public class ReductionService {
     public ResponseEntity simplify(List<Point> coordList) {
         List<Point> pointListOut = new ArrayList<>();
         ramerDouglasPeucker(coordList,0.001,pointListOut);
-        return new ResponseEntity<>(pointListOut,HttpStatus.OK);
+        Map<String, Object> map =new HashMap<>();
+        map.put("reducedData",pointListOut);
+        map.put("reductionRatio",(1-((double)pointListOut.size()/coordList.size())) * 100);
+        return new ResponseEntity<>(map,HttpStatus.OK);
     }
 
     private static double perpendicularDistance(Point pt, Point lineStart, Point lineEnd) {

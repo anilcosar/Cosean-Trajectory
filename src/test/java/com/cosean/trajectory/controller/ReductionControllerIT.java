@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,23 +33,25 @@ public class ReductionControllerIT extends BaseIT {
     public void init(){
         locationList = new ArrayList<Point>();
         locationList.add(new Point(40.823938, 29.925402));
-        locationList.add(new Point(40.824635, 29.923103));
-        locationList.add(new Point(40.824708, 29.921665));
-        locationList.add(new Point(40.823807, 29.921880));
-        locationList.add(new Point(40.823036, 29.922728));
+        locationList.add(new Point(41.824635, 29.923103));
+        locationList.add(new Point(42.824708, 29.921665));
+        locationList.add(new Point(43.823807, 29.921880));
+        locationList.add(new Point(44.823036, 29.922728));
     }
 
     @Test
     public void should_reduction_points() throws Exception {
 
 
-        ResponseEntity<List> response = testRestTemplate
-                .postForEntity("/v1/reduction",locationList,List.class);
+        ResponseEntity<Map> response = testRestTemplate
+                .postForEntity("/v1/reduction",locationList,Map.class);
 
-
+        Map map = response.getBody();
+        List responseData = (List) map.get("reducedData");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response).isNotNull();
-        assertThat(response.getBody().size()).isGreaterThan(2);
+        assertThat(responseData.size()).isEqualTo(3);
+        assertThat(map.get("reductionRatio")).isEqualTo(40.0);
     }
 
 }

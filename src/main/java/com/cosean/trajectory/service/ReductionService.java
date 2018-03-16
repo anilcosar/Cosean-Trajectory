@@ -14,11 +14,13 @@ import java.util.Map;
 public class ReductionService {
 
     public ResponseEntity simplify(List<Point> coordList) {
+        long startTime = System.nanoTime();
         List<Point> pointListOut = new ArrayList<>();
         ramerDouglasPeucker(coordList,0.001,pointListOut);
         Map<String, Object> map =new HashMap<>();
         map.put("reducedData",pointListOut);
         map.put("reductionRatio",(1-((double)pointListOut.size()/coordList.size())) * 100);
+        map.put("reductionDuration",(System.nanoTime()-startTime)/1000000.0 +" ms");
         return new ResponseEntity<>(map,HttpStatus.OK);
     }
 

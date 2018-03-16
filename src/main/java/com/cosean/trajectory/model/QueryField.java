@@ -6,19 +6,47 @@ public class QueryField {
     private final double xmax, ymax;   // maximum x- and y-coordinates
 
     public QueryField(double xmin, double ymin, double xmax, double ymax) {
-        if (xmax < xmin || ymax < ymin) {
-            throw new IllegalArgumentException("Invalid rectangle");
+
+        if (xmin < xmax && ymin < ymax) {
+            this.xmin = xmin;
+            this.ymin = ymin;
+            this.xmax = xmax;
+            this.ymax = ymax;
+        } else if (xmin < xmax && ymin > ymax) {
+            this.xmin = xmin;
+            this.ymin = ymax;
+            this.xmax = xmax;
+            this.ymax = ymin;
+        } else if (xmin > xmax && ymin > ymax) {
+            this.xmin = xmax;
+            this.ymin = ymax;
+            this.xmax = xmin;
+            this.ymax = ymin;
+        } else {
+            this.xmin = xmax;
+            this.ymin = ymin;
+            this.xmax = xmin;
+            this.ymax = ymax;
+
         }
-        this.xmin = xmin;
-        this.ymin = ymin;
-        this.xmax = xmax;
-        this.ymax = ymax;
+
     }
 
-    public double xmin() { return xmin; }
-    public double ymin() { return ymin; }
-    public double xmax() { return xmax; }
-    public double ymax() { return ymax; }
+    public double xmin() {
+        return xmin;
+    }
+
+    public double ymin() {
+        return ymin;
+    }
+
+    public double xmax() {
+        return xmax;
+    }
+
+    public double ymax() {
+        return ymax;
+    }
 
     public boolean intersects(QueryField that) {
         return this.xmax >= that.xmin && this.ymax >= that.ymin

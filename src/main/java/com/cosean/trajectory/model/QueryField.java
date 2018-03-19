@@ -2,60 +2,59 @@ package com.cosean.trajectory.model;
 
 public class QueryField {
 
-    private final double xmin, ymin;   // minimum x- and y-coordinates
-    private final double xmax, ymax;   // maximum x- and y-coordinates
+    private final double xMin, yMin;
+    private final double xMax, yMax;
 
-    public QueryField(double xmin, double ymin, double xmax, double ymax) {
+    public QueryField(double xMin, double yMin, double xMax, double yMax) {
 
-        if (xmin < xmax && ymin < ymax) {
-            this.xmin = xmin;
-            this.ymin = ymin;
-            this.xmax = xmax;
-            this.ymax = ymax;
-        } else if (xmin < xmax && ymin > ymax) {
-            this.xmin = xmin;
-            this.ymin = ymax;
-            this.xmax = xmax;
-            this.ymax = ymin;
-        } else if (xmin > xmax && ymin > ymax) {
-            this.xmin = xmax;
-            this.ymin = ymax;
-            this.xmax = xmin;
-            this.ymax = ymin;
+        if (xMin < xMax && yMin < yMax) {
+            this.xMin = xMin;
+            this.yMin = yMin;
+            this.xMax = xMax;
+            this.yMax = yMax;
+        } else if (xMin < xMax && yMin > yMax) {
+            this.xMin = xMin;
+            this.yMin = yMax;
+            this.xMax = xMax;
+            this.yMax = yMin;
+        } else if (xMin > xMax && yMin > yMax) {
+            this.xMin = xMax;
+            this.yMin = yMax;
+            this.xMax = xMin;
+            this.yMax = yMin;
         } else {
-            this.xmin = xmax;
-            this.ymin = ymin;
-            this.xmax = xmin;
-            this.ymax = ymax;
-
+            this.xMin = xMax;
+            this.yMin = yMin;
+            this.xMax = xMin;
+            this.yMax = yMax;
         }
 
     }
 
     public double xmin() {
-        return xmin;
+        return xMin;
     }
 
     public double ymin() {
-        return ymin;
+        return yMin;
     }
 
     public double xmax() {
-        return xmax;
+        return xMax;
     }
 
     public double ymax() {
-        return ymax;
+        return yMax;
     }
 
     public boolean intersects(QueryField that) {
-        return this.xmax >= that.xmin && this.ymax >= that.ymin
-                && that.xmax >= this.xmin && that.ymax >= this.ymin;
+        return this.xMax >= that.xMin && this.yMax >= that.yMin
+                && that.xMax >= this.xMin && that.yMax >= this.yMin;
     }
 
     public boolean contains(Point p) {
-        return (p.getLatitude() >= xmin) && (p.getLatitude() <= xmax)
-                && (p.getLongitude() >= ymin) && (p.getLongitude() <= ymax);
+        return (p.getLatitude() >= xMin) && (p.getLatitude() <= xMax)
+                && (p.getLongitude() >= yMin) && (p.getLongitude() <= yMax);
     }
 
 }

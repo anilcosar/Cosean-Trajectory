@@ -22,6 +22,7 @@ public class QueryController {
     public QueryController(QueryService queryService) {
         this.queryService = queryService;
     }
+
     @ApiOperation(value = "Returns queried points", notes = "Returns a list of queried points,query time and percent of query.", response = ResponseEntity.class)
     @PostMapping("/query")
     public ResponseEntity reduction(@RequestBody QueryRequest queryRequest) {

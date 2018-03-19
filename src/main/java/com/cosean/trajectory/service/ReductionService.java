@@ -12,23 +12,23 @@ import java.util.Map;
 
 @Service
 public class ReductionService {
+    private static final double epsilon = 0.001;
 
     public ResponseEntity simplify(List<Point> coordList) {
         long startTime = System.nanoTime();
         List<Point> pointListOut = new ArrayList<>();
-        ramerDouglasPeucker(coordList,0.001,pointListOut);
-        Map<String, Object> map =new HashMap<>();
-        map.put("reducedData",pointListOut);
-        map.put("reductionRatio",(1-((double)pointListOut.size()/coordList.size())) * 100);
-        map.put("reductionDuration",(System.nanoTime()-startTime)/1000000.0 +" ms");
-        return new ResponseEntity<>(map,HttpStatus.OK);
+        ramerDouglasPeucker(coordList, epsilon, pointListOut);
+        Map<String, Object> map = new HashMap<>();
+        map.put("reducedData", pointListOut);
+        map.put("reductionRatio", (1 - ((double) pointListOut.size() / coordList.size())) * 100);
+        map.put("reductionDuration", (System.nanoTime() - startTime) / 1000000.0 + " ms");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     private static double perpendicularDistance(Point pt, Point lineStart, Point lineEnd) {
         double dx = lineEnd.getLatitude() - lineStart.getLatitude();
         double dy = lineEnd.getLongitude() - lineStart.getLongitude();
 
-        // Normalize
         double mag = Math.hypot(dx, dy);
         if (mag > 0.0) {
             dx /= mag;
@@ -37,10 +37,8 @@ public class ReductionService {
         double pvx = pt.getLatitude() - lineStart.getLatitude();
         double pvy = pt.getLongitude() - lineStart.getLongitude();
 
-        // Get dot product (project pv onto normalized direction)
         double pvdot = dx * pvx + dy * pvy;
 
-        // Scale line direction vector and subtract it from pv
         double ax = pvx - pvdot * dx;
         double ay = pvy - pvdot * dy;
 
@@ -50,20 +48,18 @@ public class ReductionService {
     private static void ramerDouglasPeucker(List<Point> pointList, double epsilon, List<Point> out) {
         if (pointList.size() < 2) throw new IllegalArgumentException("Not enough points to simplify");
 
-        // Find the point with the maximum distance from line between the start and end
-        double dmax = 0.0;
+        double dMax = 0.0;
         int index = 0;
         int end = pointList.size() - 1;
         for (int i = 1; i < end; ++i) {
             double d = perpendicularDistance(pointList.get(i), pointList.get(0), pointList.get(end));
-            if (d > dmax) {
+            if (d > dMax) {
                 index = i;
-                dmax = d;
+                dMax = d;
             }
         }
 
-        // If max distance is greater than epsilon, recursively simplify
-        if (dmax > epsilon) {
+        if (dMax > epsilon) {
             List<Point> recResults1 = new ArrayList<>();
             List<Point> recResults2 = new ArrayList<>();
             List<Point> firstLine = pointList.subList(0, index + 1);
@@ -71,12 +67,10 @@ public class ReductionService {
             ramerDouglasPeucker(firstLine, epsilon, recResults1);
             ramerDouglasPeucker(lastLine, epsilon, recResults2);
 
-            // build the result list
             out.addAll(recResults1.subList(0, recResults1.size() - 1));
             out.addAll(recResults2);
-            if (out.size() < 2) throw new RuntimeException("Problem assembling output");
+            if (out.size() < 2) throw new RuntimeException("Not enough points to simplify");
         } else {
-            // Just return start and end points
             out.clear();
             out.add(pointList.get(0));
             out.add(pointList.get(pointList.size() - 1));
